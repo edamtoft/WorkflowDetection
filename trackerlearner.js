@@ -105,7 +105,7 @@ async function learn() {
       }]
     },
     options: {
-      responsive: false
+      responsive: true
     }
   });
 }
@@ -176,7 +176,7 @@ function printChart(predictionData) {
       }]
     },
     options: {
-      responsive: false,
+      responsive: true,
       scales: {
         yAxes: [{
             ticks: {

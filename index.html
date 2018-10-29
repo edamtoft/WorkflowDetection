@@ -20,65 +20,99 @@
 </head>
 
 <body onload="init()">
-  <nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <a class="navbar-brand" href="/">CMS</a>
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container">
+      <a class="navbar-brand" href="/">CMS</a>
 
-    <div class="collapse navbar-collapse in">
-      <ul class="navbar-nav mr-auto">
-        <li class="nav-item">
-          <a href="index.html?page=content" class="nav-link">Content</a>
-        </li>
-        <li class="nav-item">
-          <a href="index.html?page=seo" class="nav-link">SEO</a>
-        </li>
-        <li class="nav-item">
-          <a href="index.html?page=assets" class="nav-link">Assets</a>
-        </li>
-        <li class="nav-item">
-          <a href="index.html?page=leads" class="nav-link">Leads</a>
-        </li>
-        <li class="nav-item">
-          <a href="index.html?page=reports" class="nav-link">Reports</a>
-        </li>
-        <li class="nav-item">
-          <a href="index.html?page=users" class="nav-link">Users</a>
-        </li>
-        <li class="nav-item">
-          <a href="index.html?page=settings" class="nav-link">Settings</a>
-        </li>
-      </ul>
+      <div class="collapse navbar-collapse in">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item">
+            <a href="index.html?page=content" class="nav-link">Content</a>
+          </li>
+          <li class="nav-item">
+            <a href="index.html?page=seo" class="nav-link">SEO</a>
+          </li>
+          <li class="nav-item">
+            <a href="index.html?page=assets" class="nav-link">Assets</a>
+          </li>
+          <li class="nav-item">
+            <a href="index.html?page=leads" class="nav-link">Leads</a>
+          </li>
+          <li class="nav-item">
+            <a href="index.html?page=reports" class="nav-link">Reports</a>
+          </li>
+          <li class="nav-item">
+            <a href="index.html?page=users" class="nav-link">Users</a>
+          </li>
+          <li class="nav-item">
+            <a href="index.html?page=settings" class="nav-link">Settings</a>
+          </li>
+        </ul>
+      </div>
     </div>
   </nav>
-  <main class="container mt-4">
-    <h1>Workflow Detection with Deep Learning</h1>
-    <p>
-      This sample uses a deep neural network to predict the action you will perform based on the history of previous
-      actions you've performed.
-      It records every page you visit and uses that information to continue learning and improve its predictions.
-      Learning is performed asynchronously
-      while the browser is idle so performance is not affected. The entire neural network is constructed on the browser
-      and is WebGL accelerated for
-      fast performance. No backend server is needed.
-    </p>
-    <h2>Predictions</h2>
-    <p>
-      <canvas id="predictions-graph" width="640" height="480"></canvas>
-    </p>
-    <h2>Training</h2>
-    <p>
-      The model is updated and trained automatically as your history is updated.
 
-      To train the model from scratch, press the button below. Results are recorded in the console. In general, you
-      should have at
-      least 100 interactions before the model will be very accurate.
-    </p>
-    <p>
-      <button class="btn btn-primary" onclick="learn()" id="learn">Learn</button>
-      <button class="btn btn-main" onclick="reset()" id="reset">Reset All</button>
-    </p>
-    <p>
-      <canvas id="learning-graph" width="640" height="480"></canvas>
-    </p>
+  <header id="hero" class="jumbotron">
+    <div class="container">
+      <h1>Workflow Detection with Machine Learning</h1>
+      <hr>
+      <p>Predict what a user will do next with a deep neural network and TensorFlow.js</p>
+    </div>
+  </header>
+
+  <main class="container mt-4">
+    <div class="row">
+      <div class="col-md-6">
+        <section>
+          <h2>About</h2>
+          <p>
+            This sample uses a deep neural network to predict the action you will perform based on the history of
+            previous actions you've performed. It records every page you visit and uses that information to continue
+            learning and improve its predictions. Learning is performed asynchronously while the browser is idle so
+            performance is not affected. The entire neural network is constructed on the browser and is WebGL
+            accelerated for fast performance. No backend server is needed.
+          </p>
+        </section>
+        <section>
+          <h2>Usage</h2>
+          <p>
+            Choose a few patterns and click around the site. Your actions will be recorded to local storage. Once you
+            have about 100 clicks, hit the "train" button. This will train the initial model. After that, when you
+            click around, a graph of predicted next moves will be shown. If the confidence is high enough, the link to
+            the next button will also blink.
+          </p>
+        </section>
+      </div>
+      <div class="col-md-6">
+        <section>
+          <h2>Predictions</h2>
+          <p>
+            <canvas id="predictions-graph"></canvas>
+          </p>
+        </section>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-12">
+        <section>
+          <h2>Training</h2>
+          <p>
+            Once the model is initially trained, it will automatically update itself as your history is updated.
+          </p>
+          <p>
+            To train the model from scratch, press the button below. Results are recorded in the console. In general,
+            you should have at least 100 interactions before the model will be very accurate.
+          </p>
+          <p>
+            <button class="btn btn-primary" onclick="learn()" id="learn">Learn</button>
+            <button class="btn btn-main" onclick="reset()" id="reset">Reset All</button>
+          </p>
+          <p>
+            <canvas id="learning-graph"></canvas>
+          </p>
+        </section>
+      </div>
+    </div>
   </main>
   <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@0.13.3/dist/tf.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.3/Chart.min.js"></script>

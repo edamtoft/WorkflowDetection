@@ -21,3 +21,15 @@ improve predictions and learn new patterns.
 ## Live Demo
 
 https://edamtoft.github.io/WorkflowDetection/index.html
+
+## Neural Network Architecture
+
+This sample uses a simple deep neural network and trains the model as a state machine based off the last 5 actions.
+This keeps the model simple, but also sophisticated enough to do a reasonably good job at detecting simple patterns.
+
+The network takes a 5x8 input (5 most recent pages * 8 unique pages represented as one-hot tensors) and generates a
+flat 8 wide output which represents probabilities of each individual page. There are two hidden layers with 10 and 
+15 neurons respectively. This was a mostly arbitrary choice that seemed to provide relatively good results.
+
+A recurrent neural network using LSTM nodes may also do a good job and be better fitted to this problem, so that might
+be worth investigating as an alternative.

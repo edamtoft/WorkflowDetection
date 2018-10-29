@@ -9,7 +9,7 @@ const PAGES = [
   "settings",
 ];
 
-const IDLE_SECONDS = 10;
+const IDLE_LEARNING_DELAY = 10;
 const MIN_CERTAINTY = 0.5;
 
 async function init() {
@@ -29,7 +29,7 @@ async function init() {
     await predict(pageHistory);
   }
 
-  setInterval(() => continueLearning(), 1000 * IDLE_SECONDS);
+  setTimeout(() => continueLearning(), 1000 * IDLE_LEARNING_DELAY);
 }
 
 async function continueLearning() {

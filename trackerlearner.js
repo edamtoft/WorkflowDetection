@@ -11,6 +11,8 @@ const PAGES = [
 
 const IDLE_LEARNING_DELAY = 10;
 const MIN_CERTAINTY = 0.5;
+const EPOCHS = 100;
+const VALIDATION_SPLIT = 0.2;
 
 async function init() {
   const pageHistory = JSON.parse(localStorage.getItem("pages_visited") || "[]");
@@ -62,13 +64,13 @@ async function learn() {
   button.disabled = true;
 
   const model = tf.sequential();
-  
-  model.add(tf.layers.dense({ units: 10, activation: "relu", inputShape: [5,PAGES.length]}));
-  model.add(tf.layers.dense({ units: 15, activation: "relu" }));
+
+  model.add(tf.layers.dense({ units: 15, activation: "relu", inputShape: [5, PAGES.length] }));
+  model.add(tf.layers.dense({ units: 20, activation: "relu" }));
   model.add(tf.layers.flatten());
   model.add(tf.layers.dense({ units: PAGES.length, activation: "softmax" }));
 
-  model.compile({ loss: "categoricalCrossentropy", optimizer: "sgd" });
+  model.compile({ loss: "categoricalCrossentropy", optimizer: "adam" });
 
   console.info("Model Compiled");
 
@@ -88,7 +90,10 @@ async function learn() {
 
   const { xs, ys } = getTrainingData(pageHistory);
 
-  const fitData = await model.fit(xs, ys, { epochs: 300, validationSplit: 0.1, callbacks });
+  const fitData = await model.fit(xs, ys, { epochs: EPOCHS, validationSplit: VALIDATION_SPLIT, callbacks });
+
+  xs.dispose();
+  ys.dispose();
 
   console.info("Model fit complete.");
 
@@ -157,7 +162,7 @@ async function predict(pageHistory) {
 
   console.info("Loaded ML model");
 
-  const prediction = model.predict(tf.stack([tf.oneHot(last5, PAGES.length)]));
+  const prediction = model.predict(tf.tidy(() => tf.stack([tf.oneHot(last5, PAGES.length)])));
 
   const predictionData = await prediction.data();
 

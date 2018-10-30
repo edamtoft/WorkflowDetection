@@ -16,6 +16,18 @@
         color: transparent
       }
     }
+
+    .card.floater {
+      position:fixed;
+      width: 300px;
+      right:100px;
+      bottom:100px;
+      display: none;
+    }
+
+    .card.floater.in {
+      display: block;
+    }
   </style>
 </head>
 
@@ -114,6 +126,13 @@
       </div>
     </div>
   </main>
+  <aside id="quick-actions" class="card floater shadow">
+    <div class="card-body">
+      <h5 class="card-title">Quick Actions</h5>
+      <p class="card-text">The following links are suggested based on your detected workflow</p>
+    </div>
+    <ul id="quick-action-links" class="list-group list-group-flush"></ul>
+  </aside>
   <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@0.13.3/dist/tf.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.3/Chart.min.js"></script>
   <script src="trackerlearner.js"></script>

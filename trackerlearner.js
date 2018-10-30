@@ -10,7 +10,7 @@ const PAGES = [
 ];
 
 const IDLE_LEARNING_DELAY = 10;
-const MIN_CERTAINTY = 0.5;
+const MIN_CONFIDENCE = 0.25;
 const EPOCHS = 100;
 const VALIDATION_SPLIT = 0.2;
 
@@ -49,7 +49,7 @@ async function continueLearning() {
     }
   };
 
-  await model.fit(xs, ys, { epochs: 10, validationSplit: 0.1, callbacks });
+  await model.fit(xs, ys, { epochs: 20, validationSplit: 0.1, callbacks });
 
   await model.save("localstorage://page-history-model");
 
@@ -167,7 +167,7 @@ async function predict(pageHistory) {
   const predictionData = await prediction.data();
 
   printChart(predictionData);
-  highlightLinks(predictionData);
+  showQuickActions(predictionData);
 }
 
 function printChart(predictionData) {
@@ -193,33 +193,32 @@ function printChart(predictionData) {
   });
 }
 
-function highlightLinks(predictionData) {
-  let maxValue = Number.MIN_VALUE;
-  let maxIndex = -1;
-  for (let i = 0; i < predictionData.length; i++) {
-    if (predictionData[i] > maxValue) {
-      maxValue = predictionData[i];
-      maxIndex = i;
-    }
-  }
+function showQuickActions(predictionData) {
 
-  if (maxValue < MIN_CERTAINTY) {
+  const predictions = Array.from(predictionData)
+    .map((confidence,i) => ({ page: PAGES[i], confidence }))
+    .filter(prediction => prediction.confidence >= MIN_CONFIDENCE);
+
+  if (predictions.length === 0) {
     return;
+  } 
+
+  predictions.sort((a,b) => b.confidence - a.confidence);
+  
+  const quickActionLinks = document.getElementById("quick-action-links");
+
+  for (let prediction of predictions) {
+    const link = document.createElement("A");
+    link.href = "index.html?page=" + encodeURIComponent(prediction.page);
+    link.className = "card-link";
+    link.textContent = `${prediction.page} (${Math.round(prediction.confidence * 100)}% confident)`;
+    
+    const li = document.createElement("LI");
+    li.className = "list-group-item";
+    li.appendChild(link);
+    
+    quickActionLinks.appendChild(li);
   }
 
-  const pageName = PAGES[maxIndex];
-
-  const links = document.querySelectorAll(`a[href='index.html?page=${pageName}']`);
-
-  for (let link of links) {
-    link.classList.add("predicted-next");
-  }
-}
-
-function highlightActiveLinks() {
-  const links = document.querySelectorAll(`a[href='${location.href}']`);
-
-  for (let link of links) {
-    link.classList.add("current-item");
-  }
+  document.getElementById("quick-actions").classList.add("in");
 }

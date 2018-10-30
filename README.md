@@ -7,8 +7,7 @@ This example uses [Tensorflow.js](https://js.tensorflow.org) to create and train
 on the client side to detect workflow based on navigation through a site. In general, for a web application,
 there will a few unique "pathways" through the application that a user will repeatedly take. The customized
 neural network will learn the pathways that an individual takes through an application and start to predict
-your next move. This could be used to populate "quick links" or of some kind, or even automate actions
-based on certainty.
+your next move. This is displayed as "quick actions", and also a graph showing certainty about each next action.
 
 ## Usage
 
@@ -29,7 +28,8 @@ This keeps the model simple, but also sophisticated enough to do a reasonably go
 
 The network takes a 5x8 input (5 most recent pages * 8 unique pages represented as one-hot tensors) and generates a
 flat 8 wide output which represents probabilities of each individual page. There are two hidden layers with 10 and 
-15 neurons respectively. This was a mostly arbitrary choice that seemed to provide relatively good results.
+15 neurons respectively. This was a mostly arbitrary choice that seemed to provide relatively good results. All layers
+use ReLU activation except for the output layer which uses Softmax.
 
-A recurrent neural network using LSTM nodes may also do a good job and be better fitted to this problem, so that might
-be worth investigating as an alternative.
+A recurrent neural network using LSTM nodes may also do a good job and be better fitted to this problem, but during 
+testing, a basic deep neural network performed as well if not better and was much faster to train.
